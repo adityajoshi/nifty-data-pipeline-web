@@ -39,7 +39,13 @@ sectors = [
 
 sector_mapping = dict(zip(available_indices, sectors))
 
-selected_indices = st.multiselect("Select the indices you want to download:", list(sector_mapping.keys()))
+# Select All checkbox
+all_options = st.checkbox("Select all indices")
+
+if all_options:
+    selected_indices = st.multiselect("Select the indices you want to download:", list(sector_mapping.keys()), list(sector_mapping.keys()))
+else:
+    selected_indices = st.multiselect("Select the indices you want to download:", list(sector_mapping.keys()))
 
 if st.button("Generate Consolidated Data"):
     if not selected_indices:
@@ -47,11 +53,23 @@ if st.button("Generate Consolidated Data"):
     else:
         selected_sectors = [sector_mapping[idx] for idx in selected_indices]
         with st.spinner('Pulling data...'):
-            df = fetch_sector_data(selected_sectors)
+            df, failed_sectors = fetch_sector_data(selected_sectors)
+
+            if failed_sectors:
+                failed_indices = [idx for idx, sec in sector_mapping.items() if sec in failed_sectors]
+                st.warning(f"Failed to fetch data for: {', '.join(failed_indices)}")
+
+            if df.empty:
+                st.error("No data could be fetched for the selected indices.")
+                st.stop()
+
             excel_data = convert_df_to_excel(df)
             
         st.success("File ready!")
         
+        st.subheader("Data Preview (First 10 rows)")
+        st.dataframe(df.head(10))
+
         # 3. Serve the file to the user
         st.download_button(
             label="Download Excel",

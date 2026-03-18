@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 import io
 import os
+import streamlit as st
 
 # Define the sectors/indices you want to download
 sectors = [
@@ -14,6 +15,7 @@ sectors = [
     'niftymidsmallhealthcare_','niftymidsmallitAndtelecom_'
 ]
 
+@st.cache_data(ttl=3600)  # Cache for 1 hour
 def download_sector_csv(index_name):
     # Standard URL pattern for Nifty Indices CSVs
     url = f"https://www.niftyindices.com/IndexConstituent/ind_{index_name}list.csv"
@@ -35,15 +37,18 @@ def download_sector_csv(index_name):
 
 def fetch_data(sectors):
     all_dfs = []
+    failed_sectors = []
     for sector in sectors:
         df = download_sector_csv(sector)
         if df is not None and not df.empty:
             df['Sector'] = sector
             all_dfs.append(df)
+        else:
+            failed_sectors.append(sector)
             
     if all_dfs:
-        return pd.concat(all_dfs, ignore_index=True)
-    return pd.DataFrame()
+        return pd.concat(all_dfs, ignore_index=True), failed_sectors
+    return pd.DataFrame(), failed_sectors
 
 if __name__ == "__main__":
-    df = fetch_data(sectors)
+    df, failed = fetch_data(sectors)
