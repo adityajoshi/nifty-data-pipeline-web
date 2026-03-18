@@ -14,7 +14,6 @@ def generate_excel_from_dataframe(input_df, output_target='NSE_Sectoral_Master_L
     output = output_target if output_target else io.BytesIO()
     
     if input_df is None or input_df.empty:
-        print("Error: Input DataFrame is empty.")
         if not output_target:
             return output.getvalue()
         return None
@@ -52,8 +51,6 @@ def generate_excel_from_dataframe(input_df, output_target='NSE_Sectoral_Master_L
         workbook.worksheets_objs.insert(0, workbook.worksheets_objs.pop())
 
     if output_target:
-        print(f"File stored to: {output_target}")
-        print(summary_df.to_string(index=False))
         return output_target
     else:
         return output.getvalue()

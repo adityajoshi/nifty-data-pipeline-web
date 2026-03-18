@@ -27,13 +27,10 @@ def download_sector_csv(index_name):
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
             df = pd.read_csv(io.StringIO(response.content.decode('utf-8')))
-            print(f"Successfully fetched {index_name} in memory")
             return df
         else:
-            print(f"Failed to download {index_name}: Status Code {response.status_code}")
             return None
     except Exception as e:
-        print(f"Error downloading {index_name}: {e}")
         return None
 
 def fetch_data(sectors):
@@ -50,4 +47,3 @@ def fetch_data(sectors):
 
 if __name__ == "__main__":
     df = fetch_data(sectors)
-    print(df.head())
