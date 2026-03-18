@@ -1,5 +1,7 @@
 # Nifty Data Pipeline Web
 
+🚀 **Live Demo:** [https://rnncsbci3ubjxmbionp7sl.streamlit.app/](https://rnncsbci3ubjxmbionp7sl.streamlit.app/)
+
 A Streamlit web application that downloads and consolidates Nifty indices constituent data from the [niftyindices.com](https://niftyindices.com/) website directly into memory, exporting it as an Excel `.xlsx` file.
 
 ## Features
