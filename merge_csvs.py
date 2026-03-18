@@ -24,11 +24,13 @@ def generate_excel_from_dataframe(input_df, output_target='NSE_Sectoral_Master_L
         if 'Sector' in input_df.columns:
             # Group by sector and process each
             for sector, df in input_df.groupby('Sector'):
-                sheet_name = str(sector)[:31]
+                # Clean up sector name for sheet name
+                clean_sector = str(sector).strip('_').replace('_', ' ').title()
+                sheet_name = clean_sector[:31]
                 
                 # Add to Summary List
                 summary_data.append({
-                    'Sector Index': str(sector).upper(),
+                    'Sector Index': clean_sector.upper(),
                     'Total Stocks': len(df)
                 })
                 
