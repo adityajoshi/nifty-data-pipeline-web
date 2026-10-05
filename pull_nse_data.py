@@ -11,7 +11,7 @@ sectors = [
     'niftymetal','niftypharma','nifty_privatebank',
     'niftypsubank','niftyrealty','niftyconsumerdurables',
     'niftyoilgas','nifty500Healthcare_','niftymidsmallfinancailservice_',
-    'niftymidsmallhealthcare_','niftymidsmallitAndtelecom_'
+    'niftymidsmallhealthcare_','niftymidsmallitAndtelecom_', 'nifty500', 'niftymicrocap250_'
 ]
 
 def download_sector_csv(index_name):
